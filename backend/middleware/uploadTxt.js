@@ -1,5 +1,11 @@
-const multer = require('multer')
-const path = require('path')
+import multer from 'multer'
+import path from 'path'
+import fs from 'fs'
+
+const uploadDir = 'uploads/';
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
+}
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -25,4 +31,4 @@ const uploadTXT = multer({
     limits: { fileSize: 1024 * 1024 * 5 }
 })
 
-module.exports = uploadTXT
+export default uploadTXT

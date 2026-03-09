@@ -7,9 +7,8 @@ const Home = () => {
     const [isUploaded, setIsUploaded] = useState(false);
     const [isDownloading, setIsDownloading] = useState(false);
 
-    const DUMMY_UPLOAD_API = "https://jsonplaceholder.typicode.com/posts"; // Using a public dummy POST endpoint
-    // Using a dummy text file GET endpoint for testing download
-    const DUMMY_RECEIVE_API = "https://raw.githubusercontent.com/w3c/web-platform-tests/master/tools/pytest.ini";
+    const UPLOAD_API = "http://localhost:5000/api/file/upload";
+    const RECEIVE_API = "http://localhost:5000/api/file/get";
 
     const handleFileChange = (e) => {
         if (e.target.files && e.target.files.length > 0) {
@@ -28,7 +27,7 @@ const Home = () => {
         formData.append('file', file);
 
         try {
-            const response = await fetch(DUMMY_UPLOAD_API, {
+            const response = await fetch(UPLOAD_API, {
                 method: 'POST',
                 body: formData,
             });
@@ -46,7 +45,7 @@ const Home = () => {
     const handleDownload = async () => {
         setIsDownloading(true);
         try {
-            const response = await fetch(DUMMY_RECEIVE_API);
+            const response = await fetch(RECEIVE_API);
             if (!response.ok) throw new Error("Failed to download file");
 
             const blob = await response.blob();

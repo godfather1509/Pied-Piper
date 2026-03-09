@@ -1,5 +1,5 @@
 import express from 'express'
-import { getFile, uploadFile } from '../controllers/files.controller.js'
+import { getFile, uploadFile } from '../controller/files.controller.js'
 import uploadTXT from '../middleware/uploadTxt.js'
 
 const router = express.Router()
