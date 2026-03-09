@@ -1,14 +1,14 @@
 import fsPromise from 'fs/promises';
 import path from 'path';
 
-export const huffmanEncoder = async (inputPath) => {
+export const Encoder = async (inputPath) => {
     try {
         // 1. Read the uploaded file from the controller
         const data = await fsPromise.readFile(inputPath, 'utf8');
 
         // TODO: Implement actual Huffman Encoding logic on 'data'
         // For now, we pretend we compressed it by just assigning it
-        const compressedData = huffmanEncoding(data);
+        const compressedData = huffmanEncoder(data);
 
         // 2. Generate a new file path for the compressed output
         const dir = path.dirname(inputPath);
@@ -33,7 +33,7 @@ export const huffmanEncoder = async (inputPath) => {
     }
 };
 
-function huffmanEncoding(data) {
+function huffmanEncoder(data) {
 
     const compressedData = data;
 

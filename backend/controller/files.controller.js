@@ -1,5 +1,5 @@
 import dotenv from 'dotenv'
-import { huffmanEncoder } from './encoder.js'
+import { Encoder } from './encoder.js'
 import path from 'path'
 import fs from 'fs'
 import fsPromise from 'fs/promises'
@@ -43,7 +43,7 @@ export const uploadFile = async (req, res) => {
         const file = req.file;
 
         // Perform compression (allow await in case the user implements it asynchronously)
-        const compressedFile = await huffmanEncoder(file.path);
+        const compressedFile = await Encoder(file.path);
 
         let compressedPath = null;
         let compressedSize = null;
