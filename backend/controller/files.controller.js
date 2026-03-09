@@ -3,22 +3,31 @@ import { huffmanEncoder } from './encoder.js'
 import path from 'path'
 import fs from 'fs'
 import fsPromise from 'fs/promises'
-import { db } from '../config/db.js'
+import { sequelize } from '../config/db.js'
+import { UploadedFile, CompressedFile } from '../models/File.js'
 
 dotenv.config()
 
 export const getFile = async (req, res) => {
     try {
-        // Fetch the most recently uploaded file to match frontend's standalone GET approach
-        const [rows] = await db.query("SELECT * FROM files ORDER BY upload_time DESC LIMIT 1");
+        // Fetch the most recently uploaded file 
+        const latestFile = await UploadedFile.findOne({
+            order: [['upload_time', 'DESC']],
+            include: [{
+                model: CompressedFile,
+                required: false // LEFT JOIN
+            }]
+        });
 
-        if (!rows || rows.length === 0) {
+        if (!latestFile) {
             return res.status(404).json({ success: false, message: 'No files found' });
         }
 
-        const latestFile = rows[0];
         // Download the compressed file if available, otherwise fallback to original
-        const filePathToDownload = latestFile.compressed_path || latestFile.path;
+        const compressedRecord = latestFile.CompressedFile;
+        const filePathToDownload = (compressedRecord && compressedRecord.compressed_path)
+            ? compressedRecord.compressed_path
+            : latestFile.path;
 
         if (filePathToDownload && fs.existsSync(filePathToDownload)) {
             // Send the file as an attachment
@@ -51,21 +60,32 @@ export const uploadFile = async (req, res) => {
             compressedSize = typeof compressedFile === 'object' && compressedFile.size ? compressedFile.size : null;
         }
 
-        // Save incoming txt file & compressed file to compressor_file_db database
-        const [result] = await db.query(
-            "INSERT INTO files (original_name, filename, path, size, compressed_path, compressed_size) VALUES (?, ?, ?, ?, ?, ?)",
-            [file.originalname, file.filename, file.path, file.size, compressedPath, compressedSize]
-        );
+        // Save incoming txt file inside a safe transaction
+        const uploadedRecord = await UploadedFile.create({
+            original_name: file.originalname,
+            filename: file.filename,
+            path: file.path,
+            size: file.size
+        });
+
+        // Save compressed file explicitly tracking its relation to uploadedRecord
+        if (compressedPath) {
+            await CompressedFile.create({
+                uploaded_file_id: uploadedRecord.id,
+                compressed_path: compressedPath,
+                compressed_size: compressedSize
+            });
+        }
 
         res.status(201).json({
             success: true,
             message: 'File uploaded, compressed, and saved to DB successfully',
             file: {
-                id: result.insertId,
-                original_name: file.originalname,
-                filename: file.filename,
-                path: file.path,
-                size: file.size,
+                id: uploadedRecord.id,
+                original_name: uploadedRecord.original_name,
+                filename: uploadedRecord.filename,
+                path: uploadedRecord.path,
+                size: uploadedRecord.size,
                 compressed_path: compressedPath,
                 compressed_size: compressedSize
             }
