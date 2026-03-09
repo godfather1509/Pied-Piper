@@ -37,7 +37,7 @@ export const uploadFile = async (req, res) => {
         if (!req.file) {
             return res.status(400).json({ success: false, message: 'No file uploaded or invalid file type. Only .txt allows.' });
         }
-
+        console.log(req.file)
         const file = req.file;
 
         // Perform compression (allow await in case the user implements it asynchronously)
