@@ -33,5 +33,6 @@ export const Encoder = async (inputPath) => {
 
 function huffmanEncoder(data) {
     // This is a placeholder for the actual Huffman encoding logic.
-    consol.log(data);
+    console.log(data);
+    return data;
 }

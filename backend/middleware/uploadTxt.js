@@ -19,14 +19,13 @@ const storage = multer.diskStorage({
 const fileFilter = (req, file, cb) => {
 
     if (path.extname(file.originalname) !== ".txt") {
-        return cb(new Error("Onlt .txt files allowed"), false)
+        return cb(new Error("Only .txt files allowed"), false)
     }
 
     cb(null, true)
 }
 
 const uploadTXT = multer({
-    uploadDir,
     storage,
     fileFilter,
     limits: { fileSize: 1024 * 1024 * 5 }
