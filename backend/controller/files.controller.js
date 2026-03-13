@@ -98,6 +98,12 @@ export const downloadFile = async (req, res) => {
 
         // Check for expiry
         if (fileRecord.expires_at && new Date() > new Date(fileRecord.expires_at)) {
+            // delete file from server disk
+            if (fs.existsSync(fileRecord.compressed_path)) {
+                await fsPromise.unlink(fileRecord.compressed_path);
+            }
+            // delete file from database
+            await fileRecord.destroy();
             return res.status(410).json({ success: false, message: 'Link has expired' });
         }
 
@@ -107,13 +113,13 @@ export const downloadFile = async (req, res) => {
         if (filePath && fs.existsSync(filePath)) {
             // Generate temporary decompressed file
             const decompressedFile = await Decoder(filePath);
-            
+
             // Download the file and then delete it from the server disk
             res.download(decompressedFile.path, fileRecord.original_name, (err) => {
                 if (err) {
                     console.error("Error during download:", err);
                 }
-                
+
                 // Delete the decompressed file regardless of success or error
                 fs.unlink(decompressedFile.path, (unlinkErr) => {
                     if (unlinkErr) console.error("Error deleting decompressed file:", unlinkErr);
