@@ -77,7 +77,7 @@ const Home = () => {
         <div className="min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-gray-900 to-black text-white">
             <div className="bg-gray-800/50 backdrop-blur-lg p-10 rounded-3xl shadow-2xl w-full max-w-lg border border-gray-700/50 text-center">
                 <h1 className="text-4xl font-extrabold mb-8 text-white">
-                    Compress TXT file
+                    Upload TXT file
                 </h1>
 
                 {/* Upload Section */}
@@ -156,16 +156,10 @@ const Home = () => {
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 022-2h2a2 2 0 022 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
                                 </svg>
-                                Copy Compressed Link
+                                Copy Link
                             </>
                         )}
                     </button>
-                    {downloadLink && (
-                        <p className="text-xs text-gray-500 mt-2 break-all overflow-hidden text-ellipsis max-h-12">
-                            {downloadLink}
-                        </p>
-                    )}
-
                     {metadata && (
                         <div className="mt-8 p-6 bg-gray-900/60 rounded-2xl border border-gray-700/50 text-left space-y-4">
                             <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-2">Compression Stats</h3>
@@ -185,13 +179,13 @@ const Home = () => {
                                     <p className="text-xl font-black text-blue-500">{metadata.compressionPercentage}%</p>
                                 </div>
                                 <div className="w-full bg-gray-700 rounded-full h-2">
-                                    <div 
-                                        className="bg-blue-600 h-2 rounded-full transition-all duration-1000" 
+                                    <div
+                                        className="bg-blue-600 h-2 rounded-full transition-all duration-1000"
                                         style={{ width: `${metadata.compressionPercentage}%` }}
                                     ></div>
                                 </div>
                             </div>
-                            
+
                             <div className="pt-4 border-t border-gray-700/50">
                                 <p className="text-xs text-gray-500 mb-1">Link Expires On</p>
                                 <p className="text-sm font-medium text-amber-400">
