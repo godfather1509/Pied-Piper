@@ -21,17 +21,18 @@ export const getFile = async (req, res) => {
 
         // Generate the dynamic download link
         const downloadLink = `${req.protocol}://${req.get('host')}/api/file/download/${latestFile.id}`;
-                res.status(200).json({ 
-                success: true, 
-                downloadLink,
-                filename: latestFile.original_name,
-                metadata: {
-                    originalSize: latestFile.size,
-                    compressedSize: latestFile.compressed_size,
-                    compressionPercentage: latestFile.compression_percentage,
-                    expiresAt: latestFile.expires_at
-                }
-            });
+
+        res.status(200).json({
+            success: true,
+            downloadLink,
+            filename: latestFile.original_name,
+            metadata: {
+                originalSize: latestFile.size,
+                compressedSize: latestFile.compressed_size,
+                compressionPercentage: latestFile.compression_percentage,
+                expiresAt: latestFile.expires_at
+            }
+        });
     } catch (error) {
         console.error("Error in getFile: ", error);
         res.status(500).json({ success: false, message: 'Server Error', error: error.message });

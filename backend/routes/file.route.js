@@ -8,6 +8,6 @@ router.get("/get", getFile)
 
 router.get("/download/:id", downloadFile)
 
-router.post("/upload", uploadTXT.single("file"), uploadFile)
+router.post("/upload", uploadTXT.single("file"), uploadFile) // has multer middleware to handle file upload
 
 export default router
