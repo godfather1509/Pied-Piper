@@ -2,6 +2,7 @@ import fsPromise from 'fs/promises';
 import path from 'path';
 
 export const Encoder = async (inputPath) => {
+    // this will encode the file data using huffman encoding
     try {
         // 1. Read the uploaded file from the controller
         const data = await fsPromise.readFile(inputPath, 'utf8');

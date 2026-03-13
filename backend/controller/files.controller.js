@@ -98,6 +98,7 @@ export const downloadFile = async (req, res) => {
 
         // Check for expiry
         if (fileRecord.expires_at && new Date() > new Date(fileRecord.expires_at)) {
+            // this will execute when user tries to download file from expired link
             // delete file from server disk
             if (fs.existsSync(fileRecord.compressed_path)) {
                 await fsPromise.unlink(fileRecord.compressed_path);
