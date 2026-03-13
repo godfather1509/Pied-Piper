@@ -9,37 +9,6 @@ import { File } from '../models/File.js'
 
 dotenv.config()
 
-export const getFile = async (req, res) => {
-    try {
-        // Fetch the most recently uploaded file 
-        const latestFile = await File.findOne({
-            order: [['upload_time', 'DESC']]
-        });
-
-        if (!latestFile) {
-            return res.status(404).json({ success: false, message: 'No files found' });
-        }
-
-        // Generate the dynamic download link
-        const downloadLink = `${req.protocol}://${req.get('host')}/api/file/download/${latestFile.id}`;
-
-        res.status(200).json({
-            success: true,
-            downloadLink,
-            filename: latestFile.original_name,
-            metadata: {
-                originalSize: latestFile.size,
-                compressedSize: latestFile.compressed_size,
-                compressionPercentage: latestFile.compression_percentage,
-                expiresAt: latestFile.expires_at
-            }
-        });
-    } catch (error) {
-        console.error("Error in getFile: ", error);
-        res.status(500).json({ success: false, message: 'Server Error', error: error.message });
-    }
-}
-
 export const uploadFile = async (req, res) => {
     try {
         if (!req.file) {

@@ -11,7 +11,6 @@ const Home = () => {
     const [metadata, setMetadata] = useState(null);
 
     const UPLOAD_API = "http://localhost:5000/api/file/upload";
-    const RECEIVE_API = "http://localhost:5000/api/file/get";
 
     const formatBytes = (bytes, decimals = 2) => {
         if (!bytes || bytes === 0) return '0 Bytes';
@@ -62,29 +61,10 @@ const Home = () => {
     };
 
     const handleCopyLink = async () => {
-        let linkToCopy = downloadLink;
-
-        if (!linkToCopy) {
-            setIsDownloading(true);
-            try {
-                const response = await fetch(RECEIVE_API);
-                if (!response.ok) throw new Error("Failed to fetch link");
-                const data = await response.json();
-                linkToCopy = data.downloadLink;
-                setDownloadLink(linkToCopy);
-                setMetadata(data.metadata);
-            } catch (error) {
-                console.error(error);
-                alert("Error fetching link: " + error.message);
-                setIsDownloading(false);
-                return;
-            } finally {
-                setIsDownloading(false);
-            }
-        }
+        if (!downloadLink) return;
 
         try {
-            await navigator.clipboard.writeText(linkToCopy);
+            await navigator.clipboard.writeText(downloadLink);
             setIsCopied(true);
             setTimeout(() => setIsCopied(false), 2000);
         } catch (err) {

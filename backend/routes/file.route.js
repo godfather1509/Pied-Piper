@@ -1,10 +1,8 @@
 import express from 'express'
-import { getFile, uploadFile, downloadFile } from '../controller/files.controller.js'
+import { uploadFile, downloadFile } from '../controller/files.controller.js'
 import uploadTXT from '../middleware/uploadTxt.js'
 
 const router = express.Router()
-
-router.get("/get", getFile)
 
 router.get("/download/:id", downloadFile) // this will trigger when user clicks on download link
 
