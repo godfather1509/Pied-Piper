@@ -117,6 +117,7 @@ export const uploadFile = async (req, res) => {
 }
 
 export const downloadFile = async (req, res) => {
+    // this function gets executed when user clicks on download link
     try {
         const { id } = req.params;
         const fileRecord = await File.findByPk(id);
