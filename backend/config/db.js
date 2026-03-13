@@ -25,7 +25,7 @@ export const connectionDB = async () => {
       password: process.env.DB_PASSWORD || 'root'
     });
 
-    await connection.query(`CREATE DATABASE IF NOT EXISTS \`${dbName}\``);
+    await connection.query(`CREATE DATABASE IF NOT EXISTS \`${dbName}\``); // this will create database if not exists
     await connection.end();
 
     // 2. Authenticate Sequelize with the database

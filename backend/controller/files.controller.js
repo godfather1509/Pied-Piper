@@ -134,7 +134,7 @@ export const downloadFile = async (req, res) => {
 
         if (filePath && fs.existsSync(filePath)) {
             // Set friendly filename for download
-            res.download(filePath, fileRecord.original_name);
+            res.download(filePath, fileRecord.original_name); // this downloads the file in users machine
         } else {
             res.status(404).json({ success: false, message: 'File not found on server' });
         }
