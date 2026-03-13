@@ -1,5 +1,6 @@
 import dotenv from 'dotenv'
 import { Encoder } from './encoder.js'
+import { Decoder } from './decoder.js'
 import path from 'path'
 import fs from 'fs'
 import fsPromise from 'fs/promises'
@@ -119,8 +120,8 @@ export const uploadFile = async (req, res) => {
 export const downloadFile = async (req, res) => {
     // this function gets executed when user clicks on download link
     try {
-        const { id } = req.params;
-        const fileRecord = await File.findByPk(id);
+        const { id } = req.params; // get id of file
+        const fileRecord = await File.findByPk(id); // find file in database using id
 
         if (!fileRecord) {
             return res.status(404).json({ success: false, message: 'File not found' });
@@ -133,9 +134,22 @@ export const downloadFile = async (req, res) => {
 
         const filePath = fileRecord.compressed_path || fileRecord.path;
 
+
         if (filePath && fs.existsSync(filePath)) {
-            // Set friendly filename for download
-            res.download(filePath, fileRecord.original_name); // this downloads the file in users machine
+            // Generate temporary decompressed file
+            const decompressedFile = await Decoder(filePath);
+            
+            // Download the file and then delete it from the server disk
+            res.download(decompressedFile.path, fileRecord.original_name, (err) => {
+                if (err) {
+                    console.error("Error during download:", err);
+                }
+                
+                // Delete the decompressed file regardless of success or error
+                fs.unlink(decompressedFile.path, (unlinkErr) => {
+                    if (unlinkErr) console.error("Error deleting decompressed file:", unlinkErr);
+                });
+            });
         } else {
             res.status(404).json({ success: false, message: 'File not found on server' });
         }
