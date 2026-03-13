@@ -17,7 +17,7 @@ export const File = sequelize.define('File', {
     },
     path: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
     },
     size: {
         type: DataTypes.INTEGER,
@@ -29,6 +29,14 @@ export const File = sequelize.define('File', {
     },
     compressed_size: {
         type: DataTypes.INTEGER,
+        allowNull: true
+    },
+    compression_percentage: {
+        type: DataTypes.FLOAT,
+        allowNull: true
+    },
+    expires_at: {
+        type: DataTypes.DATE,
         allowNull: true
     }
 }, {
