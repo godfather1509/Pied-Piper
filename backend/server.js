@@ -17,6 +17,6 @@ app.use('/api/file', fileRoutes)
 
 app.listen(PORT, () => {
     connectionDB()
-    startFileCleanup()
+    startFileCleanup() // to delete expired files
     console.log(`Server started at port ${PORT}`)
 })
