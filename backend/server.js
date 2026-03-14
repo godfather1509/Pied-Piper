@@ -3,6 +3,7 @@ import dotenv from 'dotenv'
 import cors from 'cors'
 import { connectionDB } from './config/db.js'
 import fileRoutes from './routes/file.route.js'
+import { startFileCleanup } from './utils/cleanup.js'
 
 const app = express()
 
@@ -16,5 +17,6 @@ app.use('/api/file', fileRoutes)
 
 app.listen(PORT, () => {
     connectionDB()
+    startFileCleanup()
     console.log(`Server started at port ${PORT}`)
 })
