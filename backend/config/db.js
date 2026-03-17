@@ -14,7 +14,8 @@ export const sequelize = new Sequelize(
     dialect: 'mysql',
     logging: false, // Set to console.log to see SQL queries
   }
-);
+); 
+// initialize Sequelize with database credentials
 
 export const connectionDB = async () => {
   try {
@@ -26,7 +27,7 @@ export const connectionDB = async () => {
     });
 
     await connection.query(`CREATE DATABASE IF NOT EXISTS \`${dbName}\``); // this will create database if not exists
-    await connection.end();
+    await connection.end(); // close the temporary connection
 
     // 2. Authenticate Sequelize with the database
     await sequelize.authenticate();

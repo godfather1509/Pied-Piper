@@ -1,10 +1,8 @@
 import dotenv from 'dotenv'
 import { Encoder } from './encoder.js'
 import { Decoder } from './decoder.js'
-import path from 'path'
 import fs from 'fs'
 import fsPromise from 'fs/promises'
-import { sequelize } from '../config/db.js'
 import { File } from '../models/File.js'
 
 dotenv.config()
