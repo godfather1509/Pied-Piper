@@ -51,7 +51,7 @@ const Home = () => {
             setDownloadLink(data.downloadLink);
             setMetadata(data.metadata);
             setIsUploaded(true);
-            alert("File uploaded successfully! You can now copy the compressed file link.");
+            // alert("File uploaded successfully! You can now copy the compressed file link.");
         } catch (error) {
             console.error(error);
             alert("Error uploading file: " + error.message);

@@ -34,5 +34,16 @@ export const Decoder = async (inputPath) => {
 
 function huffmanDecoder(data) {
     console.log("Decompressing data...", data);
+    let current = "";
+    let decoder = "";
+    for (const bit of data) {
+        current = current + bit
+        if (reverseCodeMap.has(current)) {
+            decoder = decoder + reverseCodeMap.get(current)
+            current = ""
+        }
+    }
+
+    console.log(decoder)
     return data;
 }
